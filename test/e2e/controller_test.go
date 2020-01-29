@@ -33,15 +33,15 @@ import (
 
 func TestGameServerUnhealthyAfterDeletingPodWhileControllerDown(t *testing.T) {
 	gs := defaultGameServer(defaultNs)
+	gsClient := framework.AgonesClient.AgonesV1().GameServers(defaultNs)
+	podClient := framework.KubeClient.CoreV1().Pods(defaultNs)
+
 	readyGs, err := framework.CreateGameServerAndWaitUntilReady(defaultNs, gs)
 	if err != nil {
 		t.Fatalf("Could not get a GameServer ready: %v", err)
 	}
-	logrus.WithField("gsKey", readyGs.ObjectMeta.Name).Info("GameServer Ready")
-
-	gsClient := framework.AgonesClient.AgonesV1().GameServers(defaultNs)
-	podClient := framework.KubeClient.CoreV1().Pods(defaultNs)
 	defer gsClient.Delete(readyGs.ObjectMeta.Name, nil) // nolint: errcheck
+	logrus.WithField("gsKey", readyGs.ObjectMeta.Name).Info("GameServer Ready")
 
 	pod, err := podClient.Get(readyGs.ObjectMeta.Name, metav1.GetOptions{})
 	assert.NoError(t, err)
