@@ -14,7 +14,10 @@
 
 package alpha
 
-import "agones.dev/agones/pkg/sdk/alpha"
+import (
+	"agones.dev/agones/pkg/sdk/alpha"
+	"golang.org/x/net/context"
+)
 
 var _ alpha.SDKServer = LocalSDKServer{}
 
@@ -30,4 +33,29 @@ func NewLocalSDKServer() *LocalSDKServer {
 // Close tears down all the things
 func (l *LocalSDKServer) Close() {
 	// placeholder in case things need to be shut down
+}
+
+// PlayerConnect should be called when a player connects
+func (l LocalSDKServer) PlayerConnect(ctx context.Context, id *alpha.PlayerId) (*alpha.Empty, error) {
+	panic("implement me")
+}
+
+//PlayerDisconnect should be called when a player disconnects
+func (l LocalSDKServer) PlayerDisconnect(ctx context.Context, id *alpha.PlayerId) (*alpha.Empty, error) {
+	panic("implement me")
+}
+
+// SetPlayerCapacity to change the game server's player capacity
+func (l LocalSDKServer) SetPlayerCapacity(ctx context.Context, count *alpha.Count) (*alpha.Empty, error) {
+	panic("implement me")
+}
+
+// GetPlayerCapacity returns the current player capacity
+func (l LocalSDKServer) GetPlayerCapacity(ctx context.Context, _ *alpha.Empty) (*alpha.Count, error) {
+	panic("implement me")
+}
+
+// GetPlayerCount returns the current player count
+func (l LocalSDKServer) GetPlayerCount(ctx context.Context, _ *alpha.Empty) (*alpha.Count, error) {
+	panic("implement me")
 }

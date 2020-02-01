@@ -14,7 +14,10 @@
 
 package alpha
 
-import "agones.dev/agones/pkg/sdk/alpha"
+import (
+	"agones.dev/agones/pkg/sdk/alpha"
+	"golang.org/x/net/context"
+)
 
 var _ alpha.SDKServer = SDKServer{}
 
@@ -25,4 +28,29 @@ type SDKServer struct{}
 // NewSDKServer is a constructor for the alpha SDK Server
 func NewSDKServer() *SDKServer {
 	return &SDKServer{}
+}
+
+// PlayerConnect should be called when a player connects
+func (s SDKServer) PlayerConnect(ctx context.Context, id *alpha.PlayerId) (*alpha.Empty, error) {
+	panic("implement me")
+}
+
+//PlayerDisconnect should be called when a player disconnects
+func (s SDKServer) PlayerDisconnect(ctx context.Context, id *alpha.PlayerId) (*alpha.Empty, error) {
+	panic("implement me")
+}
+
+// SetPlayerCapacity to change the game server's player capacity
+func (s SDKServer) SetPlayerCapacity(ctx context.Context, count *alpha.Count) (*alpha.Empty, error) {
+	panic("implement me")
+}
+
+// GetPlayerCapacity returns the current player capacity
+func (s SDKServer) GetPlayerCapacity(ctx context.Context, _ *alpha.Empty) (*alpha.Count, error) {
+	panic("implement me")
+}
+
+// GetPlayerCount returns the current player count
+func (s SDKServer) GetPlayerCount(ctx context.Context, _ *alpha.Empty) (*alpha.Count, error) {
+	panic("implement me")
 }
