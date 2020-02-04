@@ -62,12 +62,13 @@ func TestGameServerApplyDefaults(t *testing.T) {
 	t.Parallel()
 
 	type expected struct {
-		protocol   corev1.Protocol
-		state      GameServerState
-		policy     PortPolicy
-		health     Health
-		scheduling apis.SchedulingStrategy
-		sdkServer  SdkServer
+		protocol            corev1.Protocol
+		state               GameServerState
+		policy              PortPolicy
+		health              Health
+		scheduling          apis.SchedulingStrategy
+		sdkServer           SdkServer
+		alphaPlayerCapacity int64
 	}
 	data := map[string]struct {
 		gameServer GameServer
@@ -77,6 +78,7 @@ func TestGameServerApplyDefaults(t *testing.T) {
 		"set basic defaults on a very simple gameserver": {
 			gameServer: GameServer{
 				Spec: GameServerSpec{
+					Alpha: AlphaSpec{Players: PlayersSpec{InitialCapacity: 10}},
 					Ports: []GameServerPort{{ContainerPort: 999}},
 					Template: corev1.PodTemplateSpec{
 						Spec: corev1.PodSpec{Containers: []corev1.Container{
@@ -100,6 +102,7 @@ func TestGameServerApplyDefaults(t *testing.T) {
 					GRPCPort: 9357,
 					HTTPPort: 9358,
 				},
+				alphaPlayerCapacity: 10,
 			},
 		},
 		"defaults on passthrough": {
@@ -333,6 +336,7 @@ func TestGameServerApplyDefaults(t *testing.T) {
 			assert.Equal(t, test.expected.scheduling, test.gameServer.Spec.Scheduling)
 			assert.Equal(t, test.expected.health, test.gameServer.Spec.Health)
 			assert.Equal(t, test.expected.sdkServer, test.gameServer.Spec.SdkServer)
+			assert.Equal(t, test.expected.alphaPlayerCapacity, test.gameServer.Status.Alpha.Players.Capacity)
 		})
 	}
 }
